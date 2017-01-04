@@ -1,0 +1,21 @@
+{
+  "name": "",
+  "version": "0.1.0",
+  "authors": [
+    "Nikolay Starikov <nickolyastar@gmail.com>"
+  ],
+  "description": "",
+  "devDependencies": {
+    "gulp": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-concat": "*",
+    "gulp-csso": "*",
+    "gulp-file-include": "*",
+    "gulp-imagemin": "*",
+    "gulp-less": "*",
+    "gulp-rename": "*",
+    "gulp-uglify": "*",
+    "gulp.spritesmith": "^6.2.1",
+    "imagemin-pngquant": "^4.2.2"
+  }
+}
