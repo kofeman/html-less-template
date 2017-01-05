@@ -23,7 +23,7 @@ sprite
 
 */
 
-//@import "sprite";
+//@import "_sprite";
 
 /*
 
@@ -41,6 +41,20 @@ body{
 
 
 // mixins
+
+.responsive(@max_width, @rules) {
+	@media only screen and (max-width: @max_width) {
+		@rules();
+	}
+}
+
+.tablet(@rules) {
+	.responsive(1000px, @rules);
+}
+
+.mobile(@rules) {
+	.responsive(768px, @rules);
+}
 
 .container{
 
@@ -61,6 +75,13 @@ body{
 	&:hover{
 		filter: grayscale(100%) brightness(0);
 	}
+}
+
+.placeholder(@color: #ccc) {
+	::-webkit-input-placeholder {color:@color;}
+	::-moz-placeholder          {color:@color;}
+	:-moz-placeholder           {color:@color;}
+	:-ms-input-placeholder      {color:@color;}
 }
 
 
@@ -124,4 +145,8 @@ body{
 	//		padding-right: 0;
 	//	}
 	//}
+
+	.mobile({
+		width:100%;
+	});
 }

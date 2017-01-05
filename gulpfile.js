@@ -5,7 +5,9 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	autoprefixer = require('gulp-autoprefixer'),
 	sprite = require("gulp.spritesmith"),
-	fileinclude = require('gulp-file-include');
+	fileinclude = require('gulp-file-include'),
+	rename = require('gulp-rename'),
+	replace = require('gulp-replace');
 
 // Собираем html
 
@@ -16,9 +18,12 @@ gulp.task('html', function() {
 			basepath: '@file',
 			indent: true
 		}))
-		.pipe(gulp.dest('/'))
+		.pipe(replace('../images', 'images'))
+		.pipe(gulp.dest('.'))
 		.on('error', console.log);
 });
+
+
 
 //less
 
@@ -27,6 +32,7 @@ gulp.task('less', function() {
 		.pipe(less())
 		.on('error', console.log)
 		.pipe(autoprefixer())
+		.pipe(replace('../../images', '../images'))
 		.pipe(gulp.dest('css'));
 });
 
@@ -52,14 +58,15 @@ gulp.task('images', function() {
 
 	// png
 
-	gulp.src(['src/images/**/*.png'])
+	gulp.src(['src/images/**/*.png', '!src/images/sprite/**/*'])
 		.pipe(imageminPngquant({quality: '65-80', speed: 4})())
 		.pipe(gulp.dest('images'));
 
 
 	// sprites
 
-	gulp.src('images/sprite/**/*') // путь, откуда берем картинки для спрайта
+	var spriteData =
+		gulp.src('images/sprite/**/*') // путь, откуда берем картинки для спрайта
 		.pipe(sprite({
 			imgName: 'images/sprite.png',
 			cssName: '_sprite.css',
@@ -72,12 +79,13 @@ gulp.task('images', function() {
 			}
 		}));
 
-	spriteData.img.pipe(gulp.dest('images')); // путь, куда сохраняем картинку
+	spriteData.img.pipe(gulp.dest('.')); // путь, куда сохраняем картинку
 	spriteData.css
 		.pipe(gulp.dest('src/less')); // путь, куда сохраняем стили
 
 	gulp.src(['src/less/_sprite.css'])
 		.pipe(rename('_sprite.less'))
+		.pipe(replace('images', '../../images'))
 		.pipe(gulp.dest('src/less'));
 
 
@@ -103,5 +111,3 @@ gulp.task('watch', function() {
 //default task
 
 gulp.task('default', [ 'html', 'less', 'images', 'watch'], function() {});
-
-
